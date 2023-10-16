@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../lib/dist/make.min.js"></script>
+</head>
+<body>
+
+  <div id="app"></div>
+
+  <script>
+    (() => {
+      const app = document.querySelector('#app')
+      const value = '123456X'
+
+      app.innerHTML = `
+        <div class="card">
+          <input
+            class="card__input"
+            type="text"
+            name="mask"
+            value="${Make.mask(value, '#.##0,00', {reverse: true})}"
+            placeholder="__/__/____"
+          />
+        </div>
+      `
+    })()
+
+    const card__input = document.querySelector('[name="mask"]')
+    card__input.addEventListener('input', function(e) {
+      const currentTarget = e.target
+      currentTarget.value = Make.mask(currentTarget.value, '#.##0,00', {reverse: true})
+    })
+
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "ESNext",
+    "outDir": "./lib",
+    "strict": true,
+    "jsx": "react-jsx",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "@helpers/*": ["./src/helpers/*"],
+      "@models/*": ["./src/models/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@typings/*": ["./src/typings/*"]
+    },
+    "plugins": [{ "transform": "ts-transform-paths" }]
+  },
+  "include": ["src/**/*", "./index.d.ts"],
+  "exclude": ["node_modules", "**/*.test.ts"],
+}
