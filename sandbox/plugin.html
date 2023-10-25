@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Chivo:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+</head>
+<body>
+  
+  
+  <div id="app">
+    <input 
+      type="text"
+      class="sp_celphones"
+      data-mask="sp_celphones"
+      id="sp_celphones"
+    />
+  </div>
+
+  <script>
+
+    $('.sp_celphones').mask("#.##0,00", {reverse: true});
+
+  </script>
+
+</body>
+</html>

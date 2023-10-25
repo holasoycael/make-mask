@@ -1,0 +1,93 @@
+/*----------- SETTINGS ----------*/
+:root {
+  font-size: 62.5%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  list-style: none;
+  border: none;
+  text-decoration: none;
+}
+*, ::after, ::before {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-box-sizing: border-box; /* Safari and Chrome */
+  -moz-box-sizing: border-box; /* Firefox */
+  -ms-box-sizing: border-box; /* IE 9 */
+  -o-box-sizing: border-box; /* Opera */
+  box-sizing: border-box;
+}
+::after, ::before {
+  white-space: pre-wrap;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0, 0.15);
+  border-radius: 0;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0);
+}
+
+
+body,
+input,
+button,
+textarea {
+  font: 500 1.6rem var(--font-poppins);
+}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+input[type="radio"], input[type="checkbox"] {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+  background: transparent;
+}
+
+
+body {
+  background: var(--color-background);
+  overflow-y: overlay;
+  overflow-x: hidden;
+}
+
+body {
+  /* overflow: hidden; */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+html, body, #app {
+  height: 100%;
+}
+
+#app {
+  display: flex;
+}
+
+html, body {
+  overflow: hidden;
+}
+
+[data-mask] {
+  font-family: "Roboto Mono";
+  font-size: 1.6rem;
+  background: #efefef;
+  padding: 1.2rem;
+  margin: auto;
+}

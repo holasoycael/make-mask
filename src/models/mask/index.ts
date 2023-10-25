@@ -1,90 +1,78 @@
 // models
 import Config from '@models/config'
+import { TWalk } from './types'
+import { OPTIONAL_NUMBER, MASK, NUMBER } from './utils'
 
-// types and interfaces
-import type { TOptions } from './types'
-
-function maskFn(value: string, mask: string, options: TOptions = {}) {
+function maskFn(value: string, mask: string) {
   const config = new Config()
   const buf = config.buf
-  const maskDigitPosArr = config.maskDigitPosArr(mask)
-
-  // console.log(maskDigitPosArr)
 
   let v = 0
   let m = 0
-  let offset = 1
-  let lastMaskChar = -1
+  const offset = 1
   const valLen = value.length
   const maskLen = mask.length
-  const addMethod = config.addMethod
   let isCheck = () => false
 
-  if (options.reverse) {
-    config.addMethod = 'unshift'
-    offset = -1
-    lastMaskChar = 0
-    m = maskLen - 1
-    v = valLen - 1
+  isCheck = () => m < maskLen && v < valLen
 
-    isCheck = () => m > -1 && v > -1
-  } else {
-    lastMaskChar = maskLen - 1
-    isCheck = () => m < maskLen && v < valLen
-  }
+  let i = 0
 
   while (isCheck()) {
+    i++
+
     const valDigit = value.charAt(v)
     const maskDigit = mask.charAt(m)
     const translation = config.patterns[maskDigit]
 
-    const isMask = maskDigitPosArr.includes(m)
+    // console.log(i, valDigit, v, '       ', translation)
 
-    // console.log(index, buf, valDigit, maskDigit, isSkip)
-    // console.log(buf, isMask, translation)
+    // console.group(i, `${value}========${mask}`)
+    // console.log(v, value, valDigit)
+    // console.log(m, mask, maskDigit)
 
-    if (translation) {
-      // console.log(
-      //   '==1==',
-      //   v,
-      //   valDigit,
-      //   m,
-      //   maskDigit,
-      //   valDigit.match(translation.pattern)
-      // )
+    const IS_NUMBER = NUMBER({ translation, valDigit })
+    const IS_OPTIONAL_NUMBER = OPTIONAL_NUMBER({ translation, valDigit })
+    const IS_MASK = MASK({ translation })
 
-      if (valDigit.match(translation.pattern)) {
-        buf[addMethod](valDigit)
+    const walkFn = ((): TWalk => {
+      if (IS_MASK) return 'MASK'
+      else if (IS_NUMBER) return 'NUMBER'
+      else if (IS_OPTIONAL_NUMBER) return 'OPTIONAL_NUMBER'
+      else return 'SKIP'
+    })()
 
+    console.clear()
+
+    console.group(i, walkFn, buf)
+    console.log(v, valDigit, value)
+    console.log(m, maskDigit, mask)
+
+    switch (walkFn) {
+      case 'MASK':
+        buf.push(maskDigit)
+        m += offset
+        break
+      case 'NUMBER':
+        buf.push(valDigit)
         v += offset
         m += offset
-      } else {
-        v += offset
-      }
-    } else {
-      // console.log('==2==', v, valDigit, m, maskDigit)
-
-      buf.push(maskDigit)
-
-      if (isMask) {
-        m += offset
-      } else {
+        break
+      case 'OPTIONAL_NUMBER':
+        buf.push(valDigit)
         v += offset
         m += offset
-      }
+        break
+      default:
+        v += offset
+        m += offset
     }
-  }
 
-  const lastMaskCharDigit = mask.charAt(lastMaskChar)
-  if (maskLen === valLen + 1 && !config.patterns[lastMaskCharDigit]) {
-    // console.log(lastMaskCharDigit)
-    // buf.push(lastMaskCharDigit);
+    console.log(translation, buf)
+    console.groupEnd()
   }
 
   const newVal = buf.join('')
-
-  // console.log(newVal)
-
   return newVal
 }
 

@@ -1,5 +1,11 @@
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 // modules
 import { mask } from '@models/mask'
+
+// helpers
+import App from '@helpers/TestingLibrary'
 
 describe('[Date]', () => {
   it('should return 1 when type 1', () => {
@@ -350,5 +356,32 @@ describe('[Mixed Type Mask]', () => {
 
   it('should return 123 456-X4Y when type 123456X4Y1', () => {
     expect(mask('123456X4Y1', 'AAA 000-S0S')).toEqual('123 456-X4Y')
+  })
+})
+
+describe('With input values', () => {
+  it('IP Address - Type', async () => {
+    render(<App current="1270" mask="099.099.099.099" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('127.0')
+
+    await userEvent.type(input, '.')
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('127.0.0')
+
+    await userEvent.type(input, '.')
+    await userEvent.type(input, '1')
+
+    expect(input.value).toBe('127.0.0.1')
+
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('127.0.0.')
+
+    await userEvent.type(input, '.')
+
+    expect(input.value).toBe('127.0.0.')
   })
 })
