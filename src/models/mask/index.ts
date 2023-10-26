@@ -1,15 +1,25 @@
 // models
 import Config from '@models/config'
-import { TWalk } from './types'
-import { OPTIONAL_NUMBER, MASK, NUMBER } from './utils'
+
+// utils
+// import { OPTIONAL_NUMBER, MASK, NUMBER } from './utils'
+import tools from '@utils/tools'
+
+// types and interfaces
+import { TLastMaskChar, TWalk } from './types'
 
 function maskFn(value: string, mask: string) {
   const config = new Config()
   const buf = config.buf
+  const maskList = config.maskList(mask)
+
+  // console.log(maskList)
 
   let v = 0
   let m = 0
+  let lastMaskChar: TLastMaskChar = undefined
   const offset = 1
+  const maskDigitPosArr = []
   const valLen = value.length
   const maskLen = mask.length
   let isCheck = () => false
@@ -24,43 +34,77 @@ function maskFn(value: string, mask: string) {
     const valDigit = value.charAt(v)
     const maskDigit = mask.charAt(m)
     const translation = config.patterns[maskDigit]
+    const n = config.getNextMask(m)(maskList)
 
-    // console.log(i, valDigit, v, '       ', translation)
+    const checkIsMask = [!translation]
 
-    // console.group(i, `${value}========${mask}`)
-    // console.log(v, value, valDigit)
-    // console.log(m, mask, maskDigit)
+    const checkIsMaskSkip = [!translation, valDigit === maskDigit]
 
-    const IS_NUMBER = NUMBER({ translation, valDigit })
-    const IS_OPTIONAL_NUMBER = OPTIONAL_NUMBER({ translation, valDigit })
-    const IS_MASK = MASK({ translation })
+    const checkIsNumber = [
+      !!translation && !!valDigit.match(translation.pattern),
+      !!translation && !translation.optional,
+      maskDigit === '0'
+    ]
+
+    const checkIsOptionalNumber = [
+      !!translation && !!valDigit.match(translation.pattern),
+      !!translation && !!translation.optional
+    ]
+
+    const checkIsOptionalValue = [
+      !!translation && !!translation.optional,
+      mask.charAt(n) === valDigit,
+      lastMaskChar !== valDigit
+    ]
 
     const walkFn = ((): TWalk => {
-      if (IS_MASK) return 'MASK'
-      else if (IS_NUMBER) return 'NUMBER'
-      else if (IS_OPTIONAL_NUMBER) return 'OPTIONAL_NUMBER'
+      if (tools.isValid(checkIsMaskSkip)) return 'MASK_SAME'
+      if (tools.isValid(checkIsMask)) return 'MASK'
+      else if (tools.isValid(checkIsNumber)) return 'NUMBER'
+      else if (tools.isValid(checkIsOptionalValue)) return 'OPTIONAL_VALUE'
+      else if (tools.isValid(checkIsOptionalNumber)) return 'OPTIONAL_NUMBER'
       else return 'SKIP'
     })()
 
-    console.clear()
+    // console.clear()
 
-    console.group(i, walkFn, buf)
+    console.group(i, walkFn, buf, tools.isValid(checkIsMaskSkip), maskList)
     console.log(v, valDigit, value)
-    console.log(m, maskDigit, mask)
+    console.log(m, maskDigit, mask, lastMaskChar, maskDigitPosArr)
+
+    // eslint-disable-next-line no-case-declarations
 
     switch (walkFn) {
-      case 'MASK':
-        buf.push(maskDigit)
-        m += offset
-        break
       case 'NUMBER':
         buf.push(valDigit)
+        lastMaskChar = undefined
         v += offset
         m += offset
         break
       case 'OPTIONAL_NUMBER':
+        lastMaskChar = undefined
         buf.push(valDigit)
         v += offset
+        m += offset
+        break
+      case 'OPTIONAL_VALUE':
+        console.log(n, mask.charAt(n), checkIsOptionalValue)
+
+        lastMaskChar = valDigit
+        buf.push(valDigit)
+        v += offset
+        m += offset
+        break
+      case 'MASK_SAME':
+        buf.push(maskDigit)
+        v += offset
+        m += offset
+        break
+      case 'MASK':
+        maskDigitPosArr.push(v)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        lastMaskChar = maskDigit
+        buf.push(maskDigit)
         m += offset
         break
       default:
@@ -71,6 +115,8 @@ function maskFn(value: string, mask: string) {
     console.log(translation, buf)
     console.groupEnd()
   }
+
+  console.log('%c Oh my heavens! ', 'background: #222; color: #bada55')
 
   const newVal = buf.join('')
   return newVal

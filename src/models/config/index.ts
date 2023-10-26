@@ -14,6 +14,23 @@ class Config {
     return []
   }
 
+  maskList(mask: string) {
+    return ((data) => {
+      for (const [i, maskDigit] of Array.from(mask).entries()) {
+        const translation = this.patterns[maskDigit]
+        if (!translation) data.add(i)
+      }
+
+      return Array.from(data)
+    })(new Set<number>())
+  }
+
+  getNextMask(m: number) {
+    return (maskList: number[]) => {
+      return maskList.filter((n) => m < n)[0] ?? -1
+    }
+  }
+
   pattern(current: string) {
     return this.patterns[current]
   }
