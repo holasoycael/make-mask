@@ -18,50 +18,85 @@
     (() => {
       const app = document.querySelector('#app')
 
-      // app.innerHTML += `
-      //   <input
-      //     class="mask__money"
-      //     type="text"
-      //     value="${Make.mask('123456', '#.##0,00', {reverse: true})}"
-      //     placeholder="__/__/____"
-      //   />
-      // `
-
-      // app.innerHTML += `
-      //   <input
-      //     class="mask__cep"
-      //     type="text"
-      //     value="${Make.mask('084', '00000-000')}"
-      //     placeholder="_____-___"
-      //   />
-      // `
+      app.innerHTML += `
+        <input
+          type="text"
+          class="mask__money"
+          data-mask="mask__money"
+          value="${Make.mask('123456', '#.##0,00', {reverse: true})}"
+          placeholder="0,00"
+        />
+      `
 
       app.innerHTML += `
         <input
-          class="mask__tel"
           type="text"
+          class="mask__cep"
+          data-mask="mask__cep"
+          value="${Make.mask('084', '00000-000')}"
+          placeholder="_____-___"
+        />
+      `
+
+      app.innerHTML += `
+        <input
+          type="text"
+          class="mask__tel"
           data-mask="mask__tel"
-          value="${Make.mask('12', '099.099.099.099')}"
+          value="${Make.mask('1270', "#.##0,00", {reverse: true})}"
+        />
+      `
+
+      app.innerHTML += `
+        <input
+          type="text"
+          class="crazy_cep"
+          data-mask="crazy_cep"
+          value="${Make.mask('1270', "00000-000")}"
+        />
+      `
+
+      app.innerHTML += `
+        <input
+          type="text"
+          class="percent"
+          data-mask="percent"
+          value="${Make.mask('1270', '##0,00%', {reverse: true})}"
         />
       `
     })()
 
-    // const mask__money = document.querySelector('.mask__money')
-    // mask__money.addEventListener('input', function(e) {
-    //   const currentTarget = e.target
-    //   currentTarget.value = Make.mask(currentTarget.value, '#.##0,00', {reverse: true})
-    // })
+    const mask__money = document.querySelector('.mask__money')
+    mask__money.addEventListener('input', function(e) {
+      const currentTarget = e.target
+      currentTarget.value = Make.mask(currentTarget.value, '#.##0,00', {reverse: true})
+    })
 
-    // const mask__cep = document.querySelector('.mask__cep')
-    // mask__cep.addEventListener('input', function(e) {
-    //   const currentTarget = e.target
-    //   currentTarget.value = Make.mask(currentTarget.value, '00000-000')
-    // })
+    const mask__cep = document.querySelector('.mask__cep')
+    mask__cep.addEventListener('input', function(e) {
+      const currentTarget = e.target
+      currentTarget.value = Make.mask(currentTarget.value, '00000-000')
+    })
 
     const mask__tel = document.querySelector('.mask__tel')
     mask__tel.addEventListener('input', function(e) {
       const currentTarget = e.target
-      currentTarget.value = Make.mask(currentTarget.value, '099.099.099.099')
+      currentTarget.value = Make.mask(currentTarget.value, "#.##0,00", {reverse: true})
+    })
+
+    const crazy_cep = document.querySelector('.crazy_cep')
+    crazy_cep.addEventListener('input', function(e) {
+      const currentTarget = e.target
+      const val = currentTarget.value
+      const masks = ['00000-000', '0-00-00-00']
+      const mask = (val.length > 7) ? masks[1] : masks[0]
+
+      currentTarget.value = Make.mask(val, mask)
+    })
+    const percent = document.querySelector('.percent')
+    percent.addEventListener('input', function(e) {
+      const currentTarget = e.target
+      currentTarget.value = Make.mask(currentTarget.value, '##0,00%', {reverse: true})
     })
 
   </script>

@@ -78,6 +78,7 @@ html, body, #app {
 
 #app {
   display: flex;
+  flex-direction: column;
 }
 
 html, body {

@@ -360,6 +360,580 @@ describe('[Mixed Type Mask]', () => {
 })
 
 describe('With input values', () => {
+  it('Date - Type', async () => {
+    render(<App current="1234" mask="00/00/0000" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12/34')
+
+    await userEvent.type(input, '5678')
+
+    expect(input.value).toBe('12/34/5678')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('12/34/5678')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('12/34/5')
+
+    await userEvent.type(input, '!@')
+
+    expect(input.value).toBe('12/34/5')
+
+    await userEvent.type(input, '#$%')
+
+    expect(input.value).toBe('12/34/5')
+
+    await userEvent.type(input, '¨&*')
+
+    expect(input.value).toBe('12/34/5')
+  })
+
+  it('Hour - Type', async () => {
+    render(<App current="1234" mask="00:00:00" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12:34')
+
+    await userEvent.type(input, '56')
+
+    expect(input.value).toBe('12:34:56')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('12:34:56')
+
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('12:34:5')
+
+    await userEvent.type(input, '!@')
+
+    expect(input.value).toBe('12:34:5')
+
+    await userEvent.type(input, '#$%')
+
+    expect(input.value).toBe('12:34:5')
+
+    await userEvent.type(input, '¨&*')
+
+    expect(input.value).toBe('12:34:5')
+  })
+
+  it('Date & Hour - Type', async () => {
+    render(<App current="1234" mask="00/00/0000 00:00:00" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12/34')
+
+    await userEvent.type(input, '56')
+
+    expect(input.value).toBe('12/34/56')
+
+    await userEvent.type(input, '78')
+
+    expect(input.value).toBe('12/34/5678')
+
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('12/34/567')
+
+    await userEvent.type(input, '!@')
+
+    expect(input.value).toBe('12/34/567')
+
+    await userEvent.type(input, '#$%')
+
+    expect(input.value).toBe('12/34/567')
+
+    await userEvent.type(input, '¨&*')
+
+    expect(input.value).toBe('12/34/567')
+
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('12/34/56')
+  })
+
+  it('ZIP Code - Type', async () => {
+    render(<App current="1234" mask="00000-000" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('1234')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('12345')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('12345-6')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('12345-67')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('12345-678')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('12345-678')
+
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('12345-67')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('1234')
+  })
+
+  it('Crazy Zip Code - Type', async () => {
+    const { rerender } = render(<App current="1234" mask="00000-000" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('1234')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('12345')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('12345-6')
+
+    await userEvent.type(input, '7')
+
+    const masks = ['00000-000', '0-00-00-00']
+    rerender(
+      <App
+        current={input.value}
+        mask={input.value.length > 7 ? masks[1] : masks[0]}
+      />
+    )
+
+    expect(input.value).toBe('1-23-45-67')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('1-23-45-67')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    rerender(
+      <App
+        current={input.value}
+        mask={input.value.length > 7 ? masks[1] : masks[0]}
+      />
+    )
+
+    expect(input.value).toBe('12345')
+  })
+
+  it('Money - Type', async () => {
+    render(<App current="1234" mask="#.##0,00" options={{ reverse: true }} />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12,34')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('123,45')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('1.234,56')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('12.345,67')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('123.456,78')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('1.234.567,89')
+
+    await userEvent.type(input, '0')
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('123.456.789,09')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('1.234.567,89')
+  })
+
+  it('Money (NO REVERSE) - Type', async () => {
+    render(<App current="1234" mask="#.##0,00" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('1.234')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('1.234,5')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('1.234,56')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('1.234,56')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('1.234,56')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('1.234,')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('1.23')
+  })
+
+  it('Telephone - Type', async () => {
+    render(<App current="1234" mask="0000-0000" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('1234')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('1234-5')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('1234-56')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('1234-567')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('1234-5678')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('1234-5678')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('1234-56')
+  })
+
+  it('Telephone with Code Area - Type', async () => {
+    render(<App current="1234" mask="(00) 0000-0000" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('(12) 34')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('(12) 345')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('(12) 3456')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('(12) 3456-7')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('(12) 3456-78')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('(12) 3456-789')
+
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('(12) 3456-7890')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('(12) 3456-78')
+  })
+
+  it('US Telephone - Type', async () => {
+    render(<App current="1234" mask="(000) 000-0000" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('(123) 4')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('(123) 45')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('(123) 456')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('(123) 456-7')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('(123) 456-78')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('(123) 456-789')
+
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('(123) 456-7890')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('(123) 456-78')
+  })
+
+  it('São Paulo Celphones - Type', async () => {
+    const { rerender } = render(<App current="1234" mask="(00) 0000-00009" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('(12) 34')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('(12) 345')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('(12) 3456')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('(12) 3456-7')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('(12) 3456-78')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('(12) 3456-789')
+
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('(12) 3456-7890')
+
+    await userEvent.type(input, '9')
+
+    const masks = ['(00) 00000-0000', '(00) 0000-00009']
+    rerender(
+      <App
+        current={input.value}
+        mask={
+          input.value.replace(/\D/g, '').length === 11 ? masks[0] : masks[1]
+        }
+      />
+    )
+
+    expect(input.value).toBe('(12) 34567-8909')
+  })
+
+  it('Mixed Type Mask - Type', async () => {
+    render(<App current="1234" mask="AAA 000-S0S" />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('123 4')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('123 45')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('123 456')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('123 456-')
+
+    await userEvent.type(input, 'X')
+
+    expect(input.value).toBe('123 456-X')
+
+    await userEvent.type(input, 'Y')
+
+    expect(input.value).toBe('123 456-X')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('123 456-X6')
+
+    await userEvent.type(input, 'Z')
+
+    expect(input.value).toBe('123 456-X6Z')
+
+    await userEvent.type(input, 'a')
+
+    expect(input.value).toBe('123 456-X6Z')
+
+    await userEvent.type(input, 'B')
+
+    expect(input.value).toBe('123 456-X6Z')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('123 456-X6Z')
+
+    await userEvent.type(input, '!@##@$$#%')
+
+    expect(input.value).toBe('123 456-X6Z')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('123 456-X')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('123')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('1')
+
+    await userEvent.type(input, 'a')
+
+    expect(input.value).toBe('1a')
+
+    await userEvent.type(input, '{backspace}')
+
+    await userEvent.type(input, 'A')
+
+    expect(input.value).toBe('1A')
+
+    await userEvent.type(input, '3')
+
+    expect(input.value).toBe('1A3')
+  })
+
+  it('CPF - Type', async () => {
+    render(
+      <App current="1234" mask="000.000.000-00" options={{ reverse: true }} />
+    )
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12-34')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('123-45')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('1.234-56')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('12.345-67')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('123.456-78')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('1.234.567-89')
+
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('12.345.678-90')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('123.456.789-09')
+  })
+
+  it('CNPJ - Type', async () => {
+    render(
+      <App
+        current="1234"
+        mask="00.000.000/0000-00"
+        options={{ reverse: true }}
+      />
+    )
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12-34')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('123-45')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('1234-56')
+
+    await userEvent.type(input, '7')
+
+    expect(input.value).toBe('1/2345-67')
+
+    await userEvent.type(input, '8')
+
+    expect(input.value).toBe('12/3456-78')
+
+    await userEvent.type(input, '9')
+
+    expect(input.value).toBe('123/4567-89')
+
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('1.234/5678-90')
+
+    await userEvent.type(input, '1')
+
+    expect(input.value).toBe('12.345/6789-01')
+
+    await userEvent.type(input, '2')
+
+    expect(input.value).toBe('123.456/7890-12')
+
+    await userEvent.type(input, '3')
+
+    expect(input.value).toBe('1.234.567/8901-23')
+
+    await userEvent.type(input, '4')
+
+    expect(input.value).toBe('12.345.678/9012-34')
+  })
+
   it('IP Address - Type', async () => {
     render(<App current="1270" mask="099.099.099.099" />)
     const input = screen.getByTestId<HTMLInputElement>('input')
@@ -383,5 +957,42 @@ describe('With input values', () => {
     await userEvent.type(input, '.')
 
     expect(input.value).toBe('127.0.0.')
+
+    await userEvent.type(input, '.')
+
+    expect(input.value).toBe('127.0.0.')
+
+    await userEvent.type(input, '0')
+    await userEvent.type(input, '0')
+
+    expect(input.value).toBe('127.0.0.00')
+
+    await userEvent.type(input, '.')
+
+    expect(input.value).toBe('127.0.0.00')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('127.0.0.')
+
+    await userEvent.type(input, '{backspace}')
+
+    expect(input.value).toBe('127.0.0')
+  })
+
+  it('Percent - Type', async () => {
+    render(<App current="1234" mask="##0,00%" options={{ reverse: true }} />)
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12,34%')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('123,45%')
+
+    await userEvent.type(input, '6')
+
+    expect(input.value).toBe('1234,56%')
   })
 })

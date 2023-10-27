@@ -2,6 +2,7 @@ export type TPattern = {
   pattern: RegExp
   optional?: boolean
   recursive?: boolean
+  fallback?: string
 }
 
 export type TPatterns = {
