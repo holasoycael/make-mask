@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+    - name: Checkout repository
+      uses: action/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.20.2
+
+    - name: Install dependecies
+      run: yarn
+
+    - name: Check tests
+      run: yarn test
+
+    - name: Check liting
+      run: yarn lint
+
+    - name: Check commit message
+      run: wagoid/commitlint-github-action@v1
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2

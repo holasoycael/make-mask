@@ -1,25 +1,33 @@
 # `Make Mask`
 
-#### `0` — Digits
-> Only numbers
+[![NPM](https://img.shields.io/npm/l/make-mask)]
+(https://www.npmjs.com/package/make-mask)
+[![Coverage Status](https://coveralls.io/repos/github/holasoycael/make-mask/badge.svg?branch=main)](https://coveralls.io/github/holasoycael/make-mask?branch=main)
+[![npm](https://img.shields.io/npm/v/make-mask)](https://www.npmjs.com/package/make-mask)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/make-mask/dist/make.min.js?compression=gzip)](https://unpkg.com/make-mask/dist/make.min.js)
 
-#### `9` — Optional digits
-> Indicates whether there will be a number or not
+`0` — Digits<br />
+Only numbers
 
-#### `#` — Recursive digits
-> Use this pattern to create infinitely repeatable formulas
+`9` — Optional digits<br />
+Indicates whether there will be a number or not
 
-#### `A` — Letters and numbers
-> Uppercase, lowercase letters and numbers
+`#` — Recursive digits<br />
+Use this pattern to create infinitely repeatable formulas
 
-#### `S` — Letters
-> Uppercase, lowercase letters
+`A` — Letters and numbers<br />
+Uppercase, lowercase letters and numbers
+
+`S` — Letters<br />
+Uppercase, lowercase letters
 
 #
 ### Default function arguments
 ```js
 fn(value, mask[ , options])
 ```
+
+## Exemples
 
 ### `Date `
 
