@@ -93,6 +93,7 @@ export default async () => {
     {
       input: 'src/index.ts',
       output: {
+        sourcemap: false,
         file: `lib/dist/make.min.js`,
         format: 'umd',
         name: 'mask'
@@ -111,9 +112,9 @@ export default async () => {
       input: 'src/index.ts',
       output: [
         {
+          sourcemap: false,
           file: 'lib/index.js',
-          format: 'cjs',
-          sourcemap: true
+          format: 'cjs'
         }
       ],
       plugins: [
