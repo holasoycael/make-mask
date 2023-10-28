@@ -15,7 +15,16 @@
     "type": "git",
     "url": "https://github.com/holasoycael/make-mask.git"
   },
-  "keywords": [],
+  "keywords": [
+    "mask",
+    "formatter",
+    "typescript",
+    "utilities",
+    "input",
+    "text",
+    "format",
+    "node"
+  ],
   "author": "Natanael Lourenço",
   "license": "MIT",
   "husky": {
