@@ -36,7 +36,7 @@ jobs:
       run: yarn lint
 
     - name: Check commit message
-      run: wagoid/commitlint-github-action@v1
+      run: wagoid/commitlint-github-action@v5
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
