@@ -7,7 +7,51 @@ import { babel } from '@rollup/plugin-babel'
 import alias from '@rollup/plugin-alias'
 import fs, { readFileSync, copyFileSync } from 'fs'
 
-const files = []
+const files = [
+  {
+    fileInput: './package.json',
+    fileOutput: './lib/package.json',
+    onBuild: (context, setContext) => {
+      const current = JSON.parse(context)
+
+      delete current['scripts']
+      delete current['lint-staged']
+      delete current['husky']
+
+      current.main = './index.js'
+
+      const snapshot = JSON.stringify(current, null, 2)
+
+      setContext(snapshot)
+    }
+  },
+  {
+    fileInput: './CHANGELOG.md',
+    fileOutput: './lib/CHANGELOG.md'
+  },
+  {
+    fileInput: './CONTRIBUTING.md',
+    fileOutput: './lib/CONTRIBUTING.md'
+  },
+  {
+    fileInput: './LICENSE.md',
+    fileOutput: './lib/LICENSE.md'
+  },
+  {
+    fileInput: './README.md',
+    fileOutput: './lib/README.md'
+  },
+  {
+    fileInput: './index.d.ts',
+    fileOutput: './lib/index.d.ts',
+    action: 'COPY'
+  },
+  {
+    fileInput: './.npmignore',
+    fileOutput: './lib/.npmignore',
+    action: 'COPY'
+  }
+]
 
 Promise.all(
   files.map(async (data) => {
@@ -51,7 +95,7 @@ export default async () => {
       output: {
         file: `lib/dist/make.min.js`,
         format: 'umd',
-        name: 'Make'
+        name: 'mask'
       },
       plugins: [
         typescript({

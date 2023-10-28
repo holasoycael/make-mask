@@ -23,7 +23,7 @@
           type="text"
           class="mask__money"
           data-mask="mask__money"
-          value="${Make.mask('123456', '#.##0,00', {reverse: true})}"
+          value="${mask('123456', '#.##0,00', {reverse: true})}"
           placeholder="0,00"
         />
       `
@@ -33,7 +33,7 @@
           type="text"
           class="mask__cep"
           data-mask="mask__cep"
-          value="${Make.mask('084', '00000-000')}"
+          value="${mask('084', '00000-000')}"
           placeholder="_____-___"
         />
       `
@@ -43,7 +43,7 @@
           type="text"
           class="mask__tel"
           data-mask="mask__tel"
-          value="${Make.mask('1270', "#.##0,00", {reverse: true})}"
+          value="${mask('1270', "#.##0,00", {reverse: true})}"
         />
       `
 
@@ -52,7 +52,7 @@
           type="text"
           class="crazy_cep"
           data-mask="crazy_cep"
-          value="${Make.mask('1270', "00000-000")}"
+          value="${mask('1270', "00000-000")}"
         />
       `
 
@@ -61,7 +61,7 @@
           type="text"
           class="percent"
           data-mask="percent"
-          value="${Make.mask('1270', '##0,00%', {reverse: true})}"
+          value="${mask('1270', '##0,00%', {reverse: true})}"
         />
       `
     })()
@@ -69,19 +69,19 @@
     const mask__money = document.querySelector('.mask__money')
     mask__money.addEventListener('input', function(e) {
       const currentTarget = e.target
-      currentTarget.value = Make.mask(currentTarget.value, '#.##0,00', {reverse: true})
+      currentTarget.value = mask(currentTarget.value, '#.##0,00', {reverse: true})
     })
 
     const mask__cep = document.querySelector('.mask__cep')
     mask__cep.addEventListener('input', function(e) {
       const currentTarget = e.target
-      currentTarget.value = Make.mask(currentTarget.value, '00000-000')
+      currentTarget.value = mask(currentTarget.value, '00000-000')
     })
 
     const mask__tel = document.querySelector('.mask__tel')
     mask__tel.addEventListener('input', function(e) {
       const currentTarget = e.target
-      currentTarget.value = Make.mask(currentTarget.value, "#.##0,00", {reverse: true})
+      currentTarget.value = mask(currentTarget.value, "#.##0,00", {reverse: true})
     })
 
     const crazy_cep = document.querySelector('.crazy_cep')
@@ -91,12 +91,12 @@
       const masks = ['00000-000', '0-00-00-00']
       const mask = (val.length > 7) ? masks[1] : masks[0]
 
-      currentTarget.value = Make.mask(val, mask)
+      currentTarget.value = mask(val, mask)
     })
     const percent = document.querySelector('.percent')
     percent.addEventListener('input', function(e) {
       const currentTarget = e.target
-      currentTarget.value = Make.mask(currentTarget.value, '##0,00%', {reverse: true})
+      currentTarget.value = mask(currentTarget.value, '##0,00%', {reverse: true})
     })
 
   </script>
