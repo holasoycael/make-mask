@@ -5,6 +5,10 @@
 [![npm](https://img.shields.io/npm/v/make-mask)](https://www.npmjs.com/package/make-mask)
 [![gzip size](https://img.badgesize.io/https://unpkg.com/make-mask/dist/make.min.js?compression=gzip)](https://unpkg.com/make-mask/dist/make.min.js)
 
+`make-mask` is a lightweight javascript library of approximately 1kb for working with text masks. It was built to solve problems mainly in HTML inputs with javascript free from any other library. It was designed to solve inputs, but it is also valid when used to print texts in a simple and objective way. I guarantee a secure library covered with tests and open source!
+
+It is very simple to use to create masks using the patterns below:
+
 `0` — Digits<br />
 Only numbers
 
@@ -22,11 +26,31 @@ Uppercase, lowercase letters
 
 #
 ### Default function arguments
-```js
-fn(value, mask[ , options])
+
+It's very simple to use!
+
+```ts
+import mask from 'make-mask'
+
+mask('12345678', '00000-000') // => 12345-678
 ```
 
-## Exemples
+Type information about the function
+
+```ts
+/**
+ * Returns the transformed value
+ * @param   {string} value    original value
+ * @param   {string} mask     syntax pattern
+ * @param   {object} options  options object
+ * @return  {string}          mask result
+*/
+fn(value, mask[ , options]): string
+```
+
+
+
+### Most common examples
 
 ### `Date `
 
