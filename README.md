@@ -24,6 +24,29 @@ Uppercase, lowercase letters and numbers
 `S` — Letters<br />
 Uppercase, lowercase letters
 
+## Installing
+
+Using npm:
+```sh
+npm install make-mask
+```
+Using yarn:
+```sh
+yarn add make-mask
+```
+Using jsDelivr CDN:
+```html
+<script src="https://cdn.jsdelivr.net/npm/make-mask/dist/make.min.js"></script>
+```
+Using unpkg CDN:
+```html
+<script src="https://unpkg.com/make-mask/dist/make.min.js"></script>
+```
+
+## Usage
+* [Vanilla JS](https://stackblitz.com/edit/vanillajs-make-mask) → [Preview](https://vanillajs-make-mask.stackblitz.io/)
+* [React](https://stackblitz.com/edit/react-make-mask) → [Preview](https://react-make-mask.stackblitz.io/)
+
 #
 ### Default function arguments
 
