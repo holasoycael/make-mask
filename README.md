@@ -1,7 +1,6 @@
 # `Make Mask`
 
-[![NPM](https://img.shields.io/npm/l/make-mask)]
-(https://www.npmjs.com/package/make-mask)
+[![NPM](https://img.shields.io/npm/l/make-mask)](https://www.npmjs.com/package/make-mask)
 [![Coverage Status](https://coveralls.io/repos/github/holasoycael/make-mask/badge.svg?branch=main)](https://coveralls.io/github/holasoycael/make-mask?branch=main)
 [![npm](https://img.shields.io/npm/v/make-mask)](https://www.npmjs.com/package/make-mask)
 [![gzip size](https://img.badgesize.io/https://unpkg.com/make-mask/dist/make.min.js?compression=gzip)](https://unpkg.com/make-mask/dist/make.min.js)
