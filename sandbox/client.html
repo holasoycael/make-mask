@@ -64,6 +64,15 @@
           value="${mask('1270', '##0,00%', {reverse: true})}"
         />
       `
+
+      app.innerHTML += `
+        <input
+          type="text"
+          class="cpf"
+          data-mask="cpf"
+          value="${mask('1270', '000.000.000-00', {reverse: true})}"
+        />
+      `
     })()
 
     const mask__money = document.querySelector('.mask__money')
@@ -93,10 +102,17 @@
 
       currentTarget.value = mask(val, mask)
     })
+
     const percent = document.querySelector('.percent')
     percent.addEventListener('input', function(e) {
       const currentTarget = e.target
       currentTarget.value = mask(currentTarget.value, '##0,00%', {reverse: true})
+    })
+
+    const cpf = document.querySelector('.cpf')
+    cpf.addEventListener('input', function(e) {
+      const currentTarget = e.target
+      currentTarget.value = mask(currentTarget.value, '000.000.000-00', {reverse: true})
     })
 
   </script>

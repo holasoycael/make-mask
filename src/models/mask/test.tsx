@@ -996,3 +996,29 @@ describe('With input values', () => {
     expect(input.value).toBe('1234,56%')
   })
 })
+
+describe('React.js', () => {
+  it('CNPJ exemple with reverse', async () => {
+    render(
+      <App
+        current="12345678901234"
+        mask="00.000.000/0000-00"
+        options={{ reverse: true }}
+      />
+    )
+    const input = screen.getByTestId<HTMLInputElement>('input')
+
+    expect(input.value).toBe('12.345.678/9012-34')
+
+    await userEvent.type(input, '5')
+
+    expect(input.value).toBe('12.345.678/9012-34')
+
+    await userEvent.type(input, '{backspace}')
+    await userEvent.type(input, '{backspace}')
+
+    await userEvent.type(input, '5456')
+
+    expect(input.value).toBe('12.345.678/9012-54')
+  })
+})

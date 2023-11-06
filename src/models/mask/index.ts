@@ -6,12 +6,13 @@ import { TOptions } from './types'
 
 function maskFn(value: string, mask: string, options: TOptions = {}) {
   const config = new Config()
+  const dataValue = config.dataValue(value, mask, options)
   const buf = config.buf
 
   let m = 0
   let v = 0
   const maskLen = mask.length
-  const valLen = value.length
+  const valLen = dataValue.length
   let offset = 1
   let addMethod = config.addMethod
   let resetPos = -1
@@ -39,7 +40,7 @@ function maskFn(value: string, mask: string, options: TOptions = {}) {
   let lastUntranslatedMaskChar
   while (check()) {
     const maskDigit = mask.charAt(m)
-    const valDigit = value.charAt(v)
+    const valDigit = dataValue.charAt(v)
     const translation = config.patterns[maskDigit]
 
     if (translation) {

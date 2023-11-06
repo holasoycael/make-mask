@@ -14,6 +14,17 @@ class Config {
     return []
   }
 
+  dataValue(value: string, mask: string, options: TOptions) {
+    const checkIsAvailable = [options.reverse, Array.from(mask).includes('#')]
+    const isAvailable = checkIsAvailable.every(Boolean)
+
+    if (isAvailable) return value
+
+    const current = value.substring(0, mask.length)
+
+    return current
+  }
+
   get addMethod(): 'push' | 'unshift' {
     return 'push'
   }

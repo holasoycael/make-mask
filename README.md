@@ -68,7 +68,7 @@ Type information about the function
  * @param   {object} options  options object
  * @return  {string}          mask result
 */
-fn(value, mask[ , options]): string
+fn(value, mask[ , options])
 ```
 
 
@@ -153,3 +153,11 @@ mask('25525525', m)     // => 255.255.25
 mask('2552552552', m)   // => 255.255.255.2
 mask('255255255255', m) // => 255.255.255.255
 ```
+
+### We recommended for you
+Maybe when working with price values directly in inputs, this library is not suitable for your needs. And we recommend exploring the [make-currency](https://www.npmjs.com/package/make-currency) library!
+
+
+### License
+
+[MIT](/license)
